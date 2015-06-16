@@ -24,6 +24,5 @@ module ContinuousMobileDelivery
             abstract member Publish : string[]
         end
     
-    // Helpers
     let Skip = [||]
 
