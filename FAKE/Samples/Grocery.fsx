@@ -1,4 +1,4 @@
-#load "..\ContinuousMobileDelivery.fsx"
+#load "../ContinuousMobileDelivery.fsx"
 open ContinuousMobileDelivery
 
 type Grocery() =
