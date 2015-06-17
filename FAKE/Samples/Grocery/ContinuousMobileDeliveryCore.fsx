@@ -8,9 +8,10 @@ module ContinuousMobileDeliveryCore
 open Fake;
 open ContinuousMobileDelivery;
 
-let configuration = (Configuration.Configuration() :> IConfiguration)
+let configuration = 
+    (Configuration.Configuration() :> IConfiguration)
 
-let build (platform:Platform) =
+let build (platform:TargetPlatform) =
     let apps = configuration.Build 
                |> Array.filter(fun (p,_,_,_) -> p = platform)
     for (_, buildObject, projectFile, (buildConfiguration, buildPlatform)) in apps do
@@ -38,3 +39,14 @@ let build (platform:Platform) =
                         Configuration = buildConfiguration
                         OutputPath = outputPath
                     })|>ignore
+
+
+type DefaultTargetImplementations() =
+    interface ITargetImplementations with
+    
+        member this.build platform = build platform
+    
+    end
+
+let targetImplementations =
+    DefaultTargetImplementations() |> (Configuration.Configuration() :> ITechnicalConfiguration).GetTargetImplementations

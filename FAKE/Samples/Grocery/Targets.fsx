@@ -1,12 +1,13 @@
 #r @"FAKE.3.5.4/tools/FakeLib.dll"
 
-#load "ContinuousDeliveryMobile.fsx"
+#load "ContinuousMobileDelivery.fsx"
 #load "Configuration.fsx"
 #load "ContinuousMobileDeliveryCore.fsx"
 
 open Fake;
 open ContinuousMobileDelivery;
 open ContinuousMobileDeliveryCore;
+
 
 Target "build" (fun () ->
     Run "build-ios"
@@ -15,15 +16,15 @@ Target "build" (fun () ->
 )
 
 Target "build-ios" (fun () ->
-    build IOS
+    targetImplementations.build IOS
 )
 
 Target "build-android" (fun () ->
-    build Android
+    targetImplementations.build Android
 )
 
 Target "unit-test" (fun () ->
-    build Android
+    3 |> ignore
 )
 
 Target "test" (fun () ->

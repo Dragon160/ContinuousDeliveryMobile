@@ -24,6 +24,11 @@ module ContinuousMobileDelivery
 
     type UnitTest = (BuildObject * BuildConfiguration * TargetFile)
 
+    type ITargetImplementations =
+        interface
+            abstract member build: TargetPlatform -> unit
+        end
+
     type IConfiguration =
         interface
             abstract member Build : App[]
@@ -37,6 +42,7 @@ module ContinuousMobileDelivery
         interface
             abstract member EmulatorPath : (BuildPlatform * string)[]
             abstract member AdbPath: (BuildPlatform * string)[]
+            abstract member GetTargetImplementations: ITargetImplementations -> ITargetImplementations
         end
     
     let Skip = [||]

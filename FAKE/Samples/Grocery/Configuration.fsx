@@ -46,3 +46,5 @@ open ContinuousMobileDelivery
                         (Windows, @"C:\EclipseADT\sdk\platform-tools\adb.exe");
                         (OSX, "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/platform-tools/adb")
                     |]
+
+                member this.GetTargetImplementations defaultTargetImplementations = defaultTargetImplementations
