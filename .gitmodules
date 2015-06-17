@@ -1,0 +1,3 @@
+[submodule "FAKE/Samples/Grocery/GroceryShopper"]
+	path = FAKE/Samples/Grocery/GroceryShopper
+	url = git@github.com:Dragon160/GroceryShopper.git
