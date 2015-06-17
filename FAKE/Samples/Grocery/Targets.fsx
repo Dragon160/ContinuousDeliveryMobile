@@ -1,12 +1,12 @@
 #r @"FAKE.3.5.4/tools/FakeLib.dll"
 
-#load "ContinuousMobileDelivery.fsx"
+#load "ContinuousDeliveryMobile.fsx"
 #load "Configuration.fsx"
-#load "ContinuousMobileDeliveryCore.fsx"
+#load "ContinuousDeliveryMobileCore.fsx"
 
 open Fake;
-open ContinuousMobileDelivery;
-open ContinuousMobileDeliveryCore;
+open ContinuousDeliveryMobile;
+open ContinuousDeliveryMobileCore;
 
 
 Target "build" (fun () ->

@@ -1,7 +1,7 @@
 module Configuration
 
-#load "ContinuousMobileDelivery.fsx"
-open ContinuousMobileDelivery
+#load "ContinuousDeliveryMobile.fsx"
+open ContinuousDeliveryMobile
 
     [<Sealed>]
     type Configuration () =
