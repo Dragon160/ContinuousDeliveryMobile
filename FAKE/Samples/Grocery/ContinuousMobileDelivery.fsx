@@ -7,6 +7,10 @@ module ContinuousMobileDelivery
     type SolutionFile = string
     type ProjectFile = string
 
+    type BuildPlatform =
+        | Windows
+        | OSX
+
     type BuildObject = 
         | Solution of SolutionFile
         | Project of ProjectFile
@@ -26,6 +30,12 @@ module ContinuousMobileDelivery
             abstract member UITest : (App*UnitTest*TargetFile)[]
             abstract member Package : (App*TargetFile)[]
             abstract member Publish : string[]
+        end
+
+    type ITechnicalConfiguration  =
+        interface
+            abstract member EmulatorPath : (BuildPlatform * string)[]
+            abstract member AdbPath: (BuildPlatform * string)[]
         end
     
     let Skip = [||]
