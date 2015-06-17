@@ -1,6 +1,6 @@
 module ContinuousMobileDelivery
 
-    type Platform =
+    type TargetPlatform =
         | Android
         | IOS
 
@@ -16,7 +16,7 @@ module ContinuousMobileDelivery
 
 
     type TargetFile = string
-    type App = (Platform * BuildObject * BuildConfiguration)
+    type App = (TargetPlatform * BuildObject * BuildConfiguration)
     type UnitTest = (BuildObject * BuildConfiguration * TargetFile)
 
     type IConfiguration =
