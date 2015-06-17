@@ -27,10 +27,34 @@ Target "unit-test" (fun () ->
     3 |> ignore
 )
 
+Target "ui-test" (fun () ->
+    Run "ui-test-ios"
+    Run "ui-test-android"
+)
+
+Target "ui-test-ios" (fun () ->
+    3 |> ignore
+)
+
+Target "ui-test-android" (fun () ->
+    3 |> ignore
+)
+
 Target "test" (fun () ->
     Run "unit-test"
-    Run "test-ios"
-    Run "test-android"
+    Run "ui-ios"
 )
+
+Target "package" (fun () ->
+    Run "package-ios"
+    Run "package-android"
+)
+Target "package-ios" (fun () ->
+    3 |> ignore
+)
+Target "package-android" (fun () ->
+    3 |> ignore
+)
+
 
 RunTarget()
