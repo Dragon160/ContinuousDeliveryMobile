@@ -12,11 +12,12 @@ let configuration = (Configuration.Configuration() :> IConfiguration)
 
 let build (platform:Platform) =
     let apps = configuration.Build 
-               |> Array.filter(fun (p,_,_,_,_) -> p = platform)
-    for (_, buildObject, projectFile, buildConfiguration, buildPlatform) in apps do
+               |> Array.filter(fun (p,_,_,_) -> p = platform)
+    for (_, buildObject, projectFile, (buildConfiguration, buildPlatform)) in apps do
         let projectOrSolution = match buildObject with
                                 | Project value -> value
                                 | Solution value -> value
+        
         System.Console.WriteLine ("building " + projectOrSolution + " in " + buildConfiguration)
         
         if platform = IOS

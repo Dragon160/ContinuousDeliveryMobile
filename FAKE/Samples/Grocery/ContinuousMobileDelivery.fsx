@@ -15,12 +15,10 @@ module ContinuousMobileDelivery
         | Solution of SolutionFile
         | Project of ProjectFile
         
-    type BuildConfiguration = string
-    type BuildPlatform = string
-
+    type BuildConfiguration = (string*string)
 
     type TargetFile = string
-    type App = (Platform * BuildObject * ProjectFile * BuildConfiguration * BuildPlatform)
+    type App = (Platform * BuildObject * ProjectFile * BuildConfiguration)
     type UnitTest = (BuildObject * BuildConfiguration * TargetFile)
 
     type IConfiguration =
