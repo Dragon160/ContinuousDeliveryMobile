@@ -3,6 +3,7 @@ module ContinuousMobileDelivery
     type Platform =
         | Android
         | IOS
+        | WindowsPhone
         
     type SolutionFile = string
     type ProjectFile = string
