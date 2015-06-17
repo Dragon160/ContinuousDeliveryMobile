@@ -41,7 +41,7 @@ module ContinuousDeliveryMobile
         member this.App = app
         member this.UnitTest = unitTest
 
-    type Package(app : App, unitTest : UnitTest, targetFile : TargetFile) = 
+    type Package(app : App, targetFile : TargetFile) = 
         member this.App = app
         member this.TargetFile = targetFile
 
