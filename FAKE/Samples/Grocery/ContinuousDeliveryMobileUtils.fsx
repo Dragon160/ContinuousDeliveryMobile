@@ -14,10 +14,6 @@ module ContinuousDeliveryMobileUtils
 
         static member IsMacOS = not Utils.IsWindows
 
-        
-    [<AbstractClass; Sealed>]
-    type InternalUtils private () =
-
         static member GetNewIncrementedBuildVersion (v:System.Version) =
             new System.Version(v.Major, v.Minor, v.Build + 1)
             
@@ -37,7 +33,15 @@ module ContinuousDeliveryMobileUtils
             Shell.AsyncExec(command, args)
 
         static member RestoreNugetPackages solutionFile pathToNuGetExe =
-            InternalUtils.Exec pathToNuGetExe ("restore " + solutionFile)
+            Utils.Exec pathToNuGetExe ("restore " + solutionFile)
+
+        static member GetOutputPath projectFile buildConfiguration buildPlatform =
+            let path = Path.GetDirectoryName projectFile
+            if buildPlatform = "AnyCPU" || buildPlatform = "Any CPU"
+            then
+                Path.Combine(path, "bin", buildConfiguration)
+            else
+                Path.Combine(path, "bin", buildPlatform, buildConfiguration)
 
         static member LaunchAndroidEmulatorIfNeeded emulatorPath adbPath =
             let emulatorArgs = "-avd AndroidFast"

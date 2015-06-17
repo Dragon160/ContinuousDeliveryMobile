@@ -38,6 +38,8 @@ open ContinuousDeliveryMobile
 
             interface ITechnicalConfiguration with
 
+                member this.AndroidKeystoreParams app = AndroidKeystoreParams("", "", "")
+
                 member this.EmulatorPath = [|
                             (Windows, @"C:\EclipseADT\sdk\tools\emulator.exe");
                             (OSX, "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/tools/emulator")
