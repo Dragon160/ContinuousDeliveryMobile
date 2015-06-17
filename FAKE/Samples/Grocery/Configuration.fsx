@@ -31,5 +31,15 @@ type Grocery() =
 
         member this.Publish = Skip
 
-let configurarion = Grocery()
 
+    interface ITechnicalConfiguration with
+
+        member this.EmulatorPath = [|
+                (Windows, @"C:\EclipseADT\sdk\tools\emulator.exe");
+                (OSX, "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/tools/emulator")
+            |]
+
+        member this.AdbPath = [|
+                (Windows, @"C:\EclipseADT\sdk\platform-tools\adb.exe");
+                (OSX, "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/platform-tools/adb")
+            |]
