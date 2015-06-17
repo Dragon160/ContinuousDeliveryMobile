@@ -42,7 +42,7 @@ open ContinuousMobileDelivery
                             (OSX, "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/tools/emulator")
                         |]
 
-                    member this.AdbPath = [|
-                            (Windows, @"C:\EclipseADT\sdk\platform-tools\adb.exe");
-                            (OSX, "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/platform-tools/adb")
-                        |]
+                member this.AdbPath = [|
+                        (Windows, @"C:\EclipseADT\sdk\platform-tools\adb.exe");
+                        (OSX, "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/platform-tools/adb")
+                    |]
