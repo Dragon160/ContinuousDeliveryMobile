@@ -3,20 +3,24 @@ module ContinuousMobileDelivery
     type TargetPlatform =
         | Android
         | IOS
+        
+    type SolutionFile = string
+    type ProjectFile = string
 
     type BuildPlatform =
         | Windows
         | OSX
 
     type BuildObject = 
-        | Solution of string
-        | Project of string
-
-    type BuildConfiguration = string
-
+        | Solution of SolutionFile
+        | Project of ProjectFile
+        
+    type BuildConfiguration = (string*string)
 
     type TargetFile = string
-    type App = (TargetPlatform * BuildObject * BuildConfiguration)
+
+    type App = (TargetPlatform * BuildObject * ProjectFile * BuildConfiguration)
+
     type UnitTest = (BuildObject * BuildConfiguration * TargetFile)
 
     type IConfiguration =
