@@ -50,42 +50,30 @@ let build (platform:TargetPlatform) =
                     })|>ignore
 
 let runUnitTests = 
+
+    let runTest (dll:System.String) (testResultTargetFile) =
+        System.Console.WriteLine ("##### RUNNING TESTS: " + dll)
+
+        let nUnitPathDictionary = technicalConfiguration.NUnitPath
+        let nUnitPath = nUnitPathDictionary.[Utils.GetCurrentBuildPlatform]
+
+        Utils.Exec
+            nUnitPath
+            (dll + " -xml=" + testResultTargetFile)
+
     for unitTest in configuration.UnitTest do
 
-        let buildObject = unitTest.BuildObject
+        let solutionFile = unitTest.SolutionFile
         let buildConfiguration = unitTest.BuildConfiguration
-        let targetDll = unitTest.TargetDll
-        let targetResultFile = unitTest.TargetResultFile
+        let buildTargetFile = unitTest.BuildTargetFile
+        let testResultTargetFile = unitTest.TestResultTargetFile
 
-        MSBuild null "Clean" [ ("Configuration", "Test"); ("Platform", "Any CPU") ] [ buildObject ] |> ignore
-        MSBuild null "Build" [ ("Configuration", "Test"); ("Platform", "Any CPU") ] [ buildObject ] |> ignore
+        MSBuild null "Clean" [ ("Configuration", buildConfiguration.Configuration); ("Platform", buildConfiguration.Platform) ] [ solutionFile ] |> ignore
+        MSBuild null "Build" [ ("Configuration", buildConfiguration.Configuration); ("Platform", buildConfiguration.Platform) ] [ solutionFile ] |> ignore
 
-        let srcFolder = (new System.IO.FileInfo(buildObject)).DirectoryName
-
-        let testDlls = System.IO.Directory.GetFiles(srcFolder, "*.Tests.dll", System.IO.SearchOption.AllDirectories)
-
-        let moveResults (xml:System.String) =
-        let resultsFolder = "testresults"
-        if System.IO.Directory.Exists (resultsFolder) <> true
-            then System.IO.Directory.CreateDirectory(resultsFolder) |> ignore
-        System.IO.File.Copy(xml, System.IO.Path.Combine(resultsFolder, (new System.IO.FileInfo(xml)).Name), true)
-
-        let runTest (dll:System.String) =
-            System.Console.WriteLine ("##### RUNNING TESTS: " + dll)
-            let xmlPath = dll.Replace(".Tests.dll", ".Tests.testresults.xml")
-
-            let nUnitPath = technicalConfiguration.NUnitPath
-
-            Utils.Exec
-                nUnitPath
-                (dll + " -xml=" + xmlPath)
-     
-            xml     
-
-        for d in testDlls.Where(dlls) do
-            d  |> runTest  |> moveResults |> ignore
-
-
+        buildTargetFile
+        |> runTest testResultTargetFile
+        |> ignore
 
 
 let package (platform:TargetPlatform) =

@@ -1,9 +1,10 @@
 module Configuration
 
-#load "ContinuousDeliveryMobile.fsx"
+    #load "ContinuousDeliveryMobile.fsx"
 
-open System.IO
-open ContinuousDeliveryMobile
+    open System.IO
+    open ContinuousDeliveryMobile
+    open System.Collections.Generic;
 
     [<Sealed>]
     type Configuration () =
@@ -14,9 +15,9 @@ open ContinuousDeliveryMobile
 
             let iOSApp config = App(IOS, Solution solution, project "GroceryShopper.Forms.iOS", BuildConfiguration(config, "iPhoneSimulator")) // use iPhone for release
 
-            let unitTests = UnitTest(Project "Grocery.UnitTests.csproj", BuildConfiguration("Test", "Any CPU"), "Grocery.UnitTests.dll", "testresults.xml") // dll name kann evtl aus Projektdatei gelesen werden
+            let unitTests = UnitTest("Grocery.UnitTests.csproj", BuildConfiguration("Test", "Any CPU"), "Grocery.UnitTests.dll", "testresults.xml") // dll name kann evtl aus Projektdatei gelesen werden
 
-            let uiTests app testresults = UITest(app, UnitTest(Project "Grocery.UITests.csproj", BuildConfiguration("UITest", "Any CPU"), "Grocery.UITests.dll", testresults))
+            let uiTests app testresults = UITest(app, UnitTest("Grocery.UITests.csproj", BuildConfiguration("UITest", "Any CPU"), "Grocery.UITests.dll", testresults))
 
             interface IConfiguration with
 
@@ -38,22 +39,26 @@ open ContinuousDeliveryMobile
 
                 member this.Publish = Skip
 
+ 
             interface ITechnicalConfiguration with
 
-                member this.EmulatorPath = [|
-                            (Windows, @"C:\EclipseADT\sdk\tools\emulator.exe");
-                            (OSX, "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/tools/emulator")
-                        |]
+                member this.EmulatorPath =
+                    let dictionary = new Dictionary<BuildPlatform, string>()
+                    dictionary.[Windows] <- @"C:\EclipseADT\sdk\tools\emulator.exe"
+                    dictionary.[OSX] <- "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/tools/emulator"
+                    dictionary
 
-                member this.AdbPath = [|
-                        (Windows, @"C:\EclipseADT\sdk\platform-tools\adb.exe");
-                        (OSX, "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/platform-tools/adb")
-                    |]
+                member this.AdbPath = 
+                    let dictionary = new Dictionary<BuildPlatform, string>()
+                    dictionary.[Windows] <- @"C:\EclipseADT\sdk\platform-tools\adb.exe"
+                    dictionary.[OSX] <- "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/platform-tools/adb"
+                    dictionary
 
-                member this.NUnitPath = [|
-                        (Windows, Path.Combine(Directory.GetCurrentDirectory(), "..", "Tools", "NUnit-2.6.4", "bin", "nunit-console.exe"));
-                        (OSX, "/Library/Frameworks/Mono.framework/Versions/Current/bin/nunit-console4")
-                    |]
+                member this.NUnitPath =
+                    let dictionary = new Dictionary<BuildPlatform, string>()
+                    dictionary.[Windows] <- Path.Combine(Directory.GetCurrentDirectory(), "..", "Tools", "NUnit-2.6.4", "bin", "nunit-console.exe")
+                    dictionary.[OSX] <- "/Library/Frameworks/Mono.framework/Versions/Current/bin/nunit-console4"
+                    dictionary
 
                 // You can override the CDM default implementations of the Targets by returning another
                 // implementation of the "ITargetImplementations" interface here

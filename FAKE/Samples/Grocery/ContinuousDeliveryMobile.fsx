@@ -1,5 +1,7 @@
 module ContinuousDeliveryMobile
 
+    open System.Collections.Generic;
+
     type TargetPlatform =
         | Android
         | IOS
@@ -12,6 +14,7 @@ module ContinuousDeliveryMobile
         | Windows
         | OSX
 
+        // TODO: REMOVE
     type BuildObject = 
         | Solution of SolutionFile
         | Project of ProjectFile
@@ -28,8 +31,8 @@ module ContinuousDeliveryMobile
         member this.ProjectFile = projectFile
         member this.BuildConfiguration = buildConfiguration
 
-    type UnitTest(buildObject : BuildObject, buildConfiguration : BuildConfiguration, buildTargetFile : TargetFile, testResultTargetFile : TargetFile) = 
-        member this.BuildObject = buildObject
+    type UnitTest(solutionFile : SolutionFile, buildConfiguration : BuildConfiguration, buildTargetFile : TargetFile, testResultTargetFile : TargetFile) = 
+        member this.SolutionFile = solutionFile
         member this.BuildConfiguration = buildConfiguration
         member this.BuildTargetFile = buildTargetFile
         member this.TestResultTargetFile = testResultTargetFile
@@ -58,9 +61,9 @@ module ContinuousDeliveryMobile
 
     type ITechnicalConfiguration  =
         interface
-            abstract member EmulatorPath : (BuildPlatform * string)[]
-            abstract member AdbPath: (BuildPlatform * string)[]
-            abstract member NUnitPath: (BuildPlatform * string)[]
+            abstract member EmulatorPath : Dictionary<BuildPlatform, string>
+            abstract member AdbPath: Dictionary<BuildPlatform, string>
+            abstract member NUnitPath: Dictionary<BuildPlatform, string>
             abstract member GetTargetImplementations: ITargetImplementations -> ITargetImplementations
         end
     

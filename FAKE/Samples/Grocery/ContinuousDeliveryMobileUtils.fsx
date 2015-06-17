@@ -2,10 +2,13 @@ module ContinuousDeliveryMobileUtils
 
     #r @"FAKE.3.5.4/tools/FakeLib.dll"
 
+    #load "ContinuousDeliveryMobile.fsx"
+
     open Fake
     open System
     open System.IO
     open System.Linq
+    open ContinuousDeliveryMobile;
 
     [<AbstractClass; Sealed>]
     type Utils private () =
@@ -13,6 +16,8 @@ module ContinuousDeliveryMobileUtils
         static member IsWindows = Environment.OSVersion.ToString().Contains("Windows")
 
         static member IsMacOS = not Utils.IsWindows
+
+        static member GetCurrentBuildPlatform = if Utils.IsMacOS then BuildPlatform.OSX else BuildPlatform.Windows
 
         static member GetNewIncrementedBuildVersion (v:System.Version) =
             new System.Version(v.Major, v.Minor, v.Build + 1)
@@ -35,10 +40,7 @@ module ContinuousDeliveryMobileUtils
         static member RestoreNugetPackages solutionFile pathToNuGetExe =
             Utils.Exec pathToNuGetExe ("restore " + solutionFile)
 
-        static member LaunchAndroidEmulatorIfNeeded emulatorPath adbPath =
-            let emulatorArgs = "-avd AndroidFast"
-            let adbDevicesArgs = "devices"
-
+        static member LaunchAndroidEmulatorIfNeeded emulatorPath adbPath emulatorArgs adbDevicesArgs =
             let adbDevicesResult = 
                 ProcessHelper.ExecProcessAndReturnMessages(fun p->
                                 p.FileName <- adbPath
