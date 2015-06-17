@@ -2,8 +2,11 @@
 
 #load "ContinuousMobileDelivery.fsx"
 #load "Configuration.fsx"
+#load "ContinuousMobileDeliveryCore.fsx"
 
 open Fake;
+open ContinuousMobileDelivery;
+open ContinuousMobileDeliveryCore;
 
 Target "build" (fun () ->
     Run "build-ios"
@@ -11,8 +14,22 @@ Target "build" (fun () ->
     Run "unit-test"
 )
 
+Target "build-ios" (fun () ->
+    build IOS
+)
+
+Target "build-android" (fun () ->
+    build Android
+)
+
+Target "unit-test" (fun () ->
+    build Android
+)
+
 Target "test" (fun () ->
     Run "unit-test"
     Run "test-ios"
     Run "test-android"
 )
+
+RunTarget()
