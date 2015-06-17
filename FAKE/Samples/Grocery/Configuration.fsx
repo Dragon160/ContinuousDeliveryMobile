@@ -31,6 +31,7 @@ open ContinuousMobileDelivery
                     (androidApp "Release", uiTests, "uitestresults.xml") ;
                     |]
 
+                // Use the "Skip" helper to indicate that a specific target should not be executed
                 member this.Package = Skip
 
                 member this.Publish = Skip
@@ -47,4 +48,6 @@ open ContinuousMobileDelivery
                         (OSX, "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/platform-tools/adb")
                     |]
 
+                // You can override the CDM default implementations of the Targets by returning another
+                // implementation of the "ITargetImplementations" interface here
                 member this.GetTargetImplementations defaultTargetImplementations = defaultTargetImplementations
