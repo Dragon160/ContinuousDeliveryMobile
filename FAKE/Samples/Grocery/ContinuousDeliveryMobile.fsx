@@ -49,7 +49,7 @@ module ContinuousDeliveryMobile
         interface
             abstract member build: TargetPlatform -> unit
             abstract member package: TargetPlatform -> unit
-            abstract member runUnitTests: unit
+            abstract member runUnitTests: unit -> unit
         end
 
     type IConfiguration =

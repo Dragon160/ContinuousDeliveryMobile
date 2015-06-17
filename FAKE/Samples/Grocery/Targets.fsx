@@ -24,7 +24,7 @@ Target "build-android" (fun () ->
 )
 
 Target "unit-test" (fun () ->
-    targetImplementations.runUnitTests
+    targetImplementations.runUnitTests()
 )
 
 Target "ui-test" (fun () ->

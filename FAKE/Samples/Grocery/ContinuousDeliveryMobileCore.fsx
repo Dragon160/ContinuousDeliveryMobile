@@ -54,7 +54,7 @@ let build (platform:TargetPlatform) =
     for app in apps do
         buildApp app
 
-let runUnitTests = 
+let runUnitTests() = 
     let runTest (dll:System.String) (testResultTargetFile) =
         System.Console.WriteLine ("##### RUNNING TESTS: " + dll)
 
@@ -128,7 +128,7 @@ type DefaultTargetImplementations() =
     
         member this.build platform = build platform
         member this.package platform = package platform
-        member this.runUnitTests = runUnitTests
+        member this.runUnitTests() = runUnitTests()
     
     end
 
