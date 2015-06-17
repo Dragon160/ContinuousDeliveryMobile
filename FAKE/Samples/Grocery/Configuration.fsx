@@ -1,6 +1,8 @@
 module Configuration
 
 #load "ContinuousDeliveryMobile.fsx"
+
+open System.IO
 open ContinuousDeliveryMobile
 
     [<Sealed>]
@@ -45,6 +47,11 @@ open ContinuousDeliveryMobile
                 member this.AdbPath = [|
                         (Windows, @"C:\EclipseADT\sdk\platform-tools\adb.exe");
                         (OSX, "/Users/Dev/Library/Developer/Xamarin/android-sdk-mac_x86/platform-tools/adb")
+                    |]
+
+                member this.NUnitPath = [|
+                        (Windows, Path.Combine(Directory.GetCurrentDirectory(), "..", "Tools", "NUnit-2.6.4", "bin", "nunit-console.exe"));
+                        (OSX, "/Library/Frameworks/Mono.framework/Versions/Current/bin/nunit-console4")
                     |]
 
                 member this.GetTargetImplementations defaultTargetImplementations = defaultTargetImplementations

@@ -42,6 +42,7 @@ module ContinuousDeliveryMobile
         interface
             abstract member EmulatorPath : (BuildPlatform * string)[]
             abstract member AdbPath: (BuildPlatform * string)[]
+            abstract member NUnitPath: (BuildPlatform * string)[]
             abstract member GetTargetImplementations: ITargetImplementations -> ITargetImplementations
         end
     

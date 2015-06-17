@@ -24,7 +24,7 @@ Target "build-android" (fun () ->
 )
 
 Target "unit-test" (fun () ->
-    3 |> ignore
+    targetImplementations.runUnitTests
 )
 
 Target "test" (fun () ->
