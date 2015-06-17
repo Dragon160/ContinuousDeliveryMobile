@@ -13,33 +13,46 @@ let configuration =
 
 let build (platform:TargetPlatform) =
     let apps = configuration.Build 
-               |> Array.filter(fun (p,_,_,_) -> p = platform)
-    for (_, buildObject, projectFile, (buildConfiguration, buildPlatform)) in apps do
-        let projectOrSolution = match buildObject with
+               |> Array.filter(fun a -> a.TargetPlatform = platform)
+
+    if Array.isEmpty apps then trace ("No apps are configured to build for the platform " + platform.ToString()) 
+
+    for app in apps do
+        let projectOrSolution = match app.BuildObject with
                                 | Project value -> value
                                 | Solution value -> value
         
-        System.Console.WriteLine ("building " + projectOrSolution + " in " + buildConfiguration)
+        trace ("building " + projectOrSolution + " in " + app.BuildConfiguration.Configuration)
         
         if platform = IOS
         then 
             XamarinHelper.iOSBuild(fun defaults ->
                 {defaults with
                     ProjectPath = projectOrSolution
-                    Configuration = buildConfiguration + "|" + buildPlatform
+                    Configuration = app.BuildConfiguration.Configuration + "|" + app.BuildConfiguration.Platform
                     Target = "Build"
                     MDToolPath = defaults.MDToolPath
                 })
         else
-            MSBuild null "Rebuild" [ ("Configuration", buildConfiguration); ("Platform", buildPlatform) ] [ projectOrSolution ] |> ignore                    
-            let outputPath = System.IO.Path.Combine((new System.IO.FileInfo(projectFile)).Directory.FullName , "bin" , buildConfiguration)  
+            MSBuild null "Rebuild" [ ("Configuration", app.BuildConfiguration.Configuration); ("Platform", app.BuildConfiguration.Platform) ] [ projectOrSolution ] |> ignore                    
+            let outputPath = System.IO.Path.Combine((new System.IO.FileInfo(app.ProjectFile)).Directory.FullName , "bin" , app.BuildConfiguration.Configuration)  
             XamarinHelper.AndroidPackage (fun defaults ->
                     {defaults with
-                        ProjectPath = projectFile
-                        Configuration = buildConfiguration
+                        ProjectPath = app.ProjectFile
+                        Configuration = app.BuildConfiguration.Configuration
                         OutputPath = outputPath
                     })|>ignore
 
+
+let package (platform:TargetPlatform) =
+    let packages = configuration.Package
+                   |> Array.filter(fun (p) -> p.App.TargetPlatform = platform)
+
+    if Array.isEmpty packages then trace ("No apps are configured to packaging for the platform " + platform.ToString()) 
+
+    for package in packages do
+
+    3 |> ignore
 
 type DefaultTargetImplementations() =
     interface ITargetImplementations with
