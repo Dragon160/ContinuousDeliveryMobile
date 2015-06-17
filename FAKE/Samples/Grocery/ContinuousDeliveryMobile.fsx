@@ -1,4 +1,4 @@
-module ContinuousMobileDelivery
+module ContinuousDeliveryMobile
 
     type TargetPlatform =
         | Android
