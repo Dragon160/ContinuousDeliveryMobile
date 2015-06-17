@@ -8,8 +8,8 @@ module Configuration
 
     [<Sealed>]
     type Configuration () =
-            let solution = System.IO.Path.Combine("GroceryShopper", "GroceryShopper", "GroceryShopper.sln")
-            let project path = System.IO.Path.Combine("GroceryShopper", "GroceryShopper", "GroceryShopper.Forms", path, path + ".csproj")
+            let solution = System.IO.Path.Combine("GroceryShopper", "GroceryShopper.sln")
+            let project path = System.IO.Path.Combine("GroceryShopper", path, path + ".csproj")
             
             let androidApp config = App(Android, Solution solution, project "GroceryShopper.Forms.Droid", BuildConfiguration(config, "Any CPU"))
 
