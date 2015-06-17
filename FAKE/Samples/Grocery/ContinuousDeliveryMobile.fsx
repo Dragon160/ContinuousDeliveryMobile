@@ -48,6 +48,8 @@ module ContinuousDeliveryMobile
     type ITargetImplementations =
         interface
             abstract member build: TargetPlatform -> unit
+            abstract member package: TargetPlatform -> unit
+            abstract member runUnitTests: unit
         end
 
     type IConfiguration =
@@ -59,8 +61,14 @@ module ContinuousDeliveryMobile
             abstract member Publish : string[]
         end
 
+    type AndroidKeystoreParams(keystorePath:string,keystoreAlias:string,keystorePassword:string)=
+        member this.KeystorePath = keystorePath
+        member this.KeystoreAlias = keystoreAlias
+        member this.KeystorePassword = keystorePassword
+
     type ITechnicalConfiguration  =
         interface
+            abstract member AndroidKeystoreParams : App -> AndroidKeystoreParams
             abstract member EmulatorPath : Dictionary<BuildPlatform, string>
             abstract member AdbPath: Dictionary<BuildPlatform, string>
             abstract member NUnitPath: Dictionary<BuildPlatform, string>

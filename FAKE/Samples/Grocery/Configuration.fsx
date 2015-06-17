@@ -42,6 +42,8 @@ module Configuration
  
             interface ITechnicalConfiguration with
 
+                member this.AndroidKeystoreParams app = AndroidKeystoreParams("", "", "")
+
                 member this.EmulatorPath =
                     let dictionary = new Dictionary<BuildPlatform, string>()
                     dictionary.[Windows] <- @"C:\EclipseADT\sdk\tools\emulator.exe"

@@ -40,6 +40,14 @@ module ContinuousDeliveryMobileUtils
         static member RestoreNugetPackages solutionFile pathToNuGetExe =
             Utils.Exec pathToNuGetExe ("restore " + solutionFile)
 
+        static member GetOutputPath projectFile buildConfiguration buildPlatform =
+            let path = Path.GetDirectoryName projectFile
+            if buildPlatform = "AnyCPU" || buildPlatform = "Any CPU"
+            then
+                Path.Combine(path, "bin", buildConfiguration)
+            else
+                Path.Combine(path, "bin", buildPlatform, buildConfiguration)
+
         static member LaunchAndroidEmulatorIfNeeded emulatorPath adbPath emulatorArgs adbDevicesArgs =
             let adbDevicesResult = 
                 ProcessHelper.ExecProcessAndReturnMessages(fun p->

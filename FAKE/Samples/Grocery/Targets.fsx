@@ -50,10 +50,10 @@ Target "package" (fun () ->
     Run "package-android"
 )
 Target "package-ios" (fun () ->
-    3 |> ignore
+    targetImplementations.package IOS
 )
 Target "package-android" (fun () ->
-    3 |> ignore
+    targetImplementations.package Android
 )
 
 
