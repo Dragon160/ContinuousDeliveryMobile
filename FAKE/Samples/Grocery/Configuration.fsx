@@ -10,13 +10,13 @@ open ContinuousDeliveryMobile
             let solution = System.IO.Path.Combine("GroceryShopper", "GroceryShopper", "GroceryShopper.sln")
             let project path = System.IO.Path.Combine("GroceryShopper", "GroceryShopper", "GroceryShopper.Forms", path, path + ".csproj")
             
-            let androidApp config = (Android, Solution solution, project "GroceryShopper.Forms.Droid", (config, "Any CPU"))
+            let androidApp config = App(Android, Solution solution, project "GroceryShopper.Forms.Droid", BuildConfiguration(config, "Any CPU"))
 
-            let iOSApp config = (IOS, Solution solution, project "GroceryShopper.Forms.iOS", (config, "iPhoneSimulator")) // use iPhone for release
+            let iOSApp config = App(IOS, Solution solution, project "GroceryShopper.Forms.iOS", BuildConfiguration(config, "iPhoneSimulator")) // use iPhone for release
 
-            let unitTests = (Project "Grocery.UnitTests.csproj", ("Test", "Any CPU"), "Grocery.UnitTests.dll") // dll name kann evtl aus Projektdatei gelesen werden
+            let unitTests = UnitTest(Project "Grocery.UnitTests.csproj", BuildConfiguration("Test", "Any CPU"), "Grocery.UnitTests.dll", "testresults.xml") // dll name kann evtl aus Projektdatei gelesen werden
 
-            let uiTests = (Project "Grocery.UITests.csproj", ("UITest", "Any CPU"), "Grocery.UITests.dll")
+            let uiTests app testresults = UITest(app, UnitTest(Project "Grocery.UITests.csproj", BuildConfiguration("UITest", "Any CPU"), "Grocery.UITests.dll", testresults))
 
             interface IConfiguration with
 
@@ -26,13 +26,14 @@ open ContinuousDeliveryMobile
                     |]
 
                 member this.UnitTest = [| 
-                    (unitTests, "testresults.xml") 
+                    unitTests
                     |]
 
                 member this.UITest = [| 
-                    (androidApp "Release", uiTests, "uitestresults.xml") ;
+                     uiTests (androidApp "Release") "android_uitestresults.xml"
                     |]
 
+                // Use the "Skip" helper to indicate that a specific target should not be executed
                 member this.Package = Skip
 
                 member this.Publish = Skip
@@ -54,4 +55,6 @@ open ContinuousDeliveryMobile
                         (OSX, "/Library/Frameworks/Mono.framework/Versions/Current/bin/nunit-console4")
                     |]
 
+                // You can override the CDM default implementations of the Targets by returning another
+                // implementation of the "ITargetImplementations" interface here
                 member this.GetTargetImplementations defaultTargetImplementations = defaultTargetImplementations
