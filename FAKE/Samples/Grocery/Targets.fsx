@@ -33,11 +33,11 @@ Target "ui-test" (fun () ->
 )
 
 Target "ui-test-ios" (fun () ->
-    3 |> ignore
+    targetImplementations.runUITests IOS
 )
 
 Target "ui-test-android" (fun () ->
-    3 |> ignore
+    targetImplementations.runUITests Android
 )
 
 Target "test" (fun () ->

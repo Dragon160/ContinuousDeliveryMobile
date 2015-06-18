@@ -54,7 +54,7 @@ let build (platform:TargetPlatform) =
     for app in apps do
         buildApp app
 
-let runUnitTests() = 
+let runUnitTest (unitTest:UnitTest) =
     let runTest (dll:System.String) (testResultTargetFile) =
         System.Console.WriteLine ("##### RUNNING TESTS: " + dll)
 
@@ -64,21 +64,29 @@ let runUnitTests() =
         Utils.Exec
             nUnitPath
             (dll + " -xml=" + testResultTargetFile)
+    let solutionFile = unitTest.SolutionFile
+    let buildConfiguration = unitTest.BuildConfiguration
+    let buildTargetFile = unitTest.BuildTargetFile
+    let testResultTargetFile = unitTest.TestResultTargetFile
 
+    MSBuild null "Clean" [ ("Configuration", buildConfiguration.Configuration); ("Platform", buildConfiguration.Platform) ] [ solutionFile ] |> ignore
+    MSBuild null "Build" [ ("Configuration", buildConfiguration.Configuration); ("Platform", buildConfiguration.Platform) ] [ solutionFile ] |> ignore
+ 
+    runTest buildTargetFile testResultTargetFile
+
+let runUnitTests() = 
     for unitTest in configuration.UnitTest do
+        runUnitTest unitTest
 
-        let solutionFile = unitTest.SolutionFile
-        let buildConfiguration = unitTest.BuildConfiguration
-        let buildTargetFile = unitTest.BuildTargetFile
-        let testResultTargetFile = unitTest.TestResultTargetFile
+let runUITests (platform:TargetPlatform) =
+    let uiTests = configuration.UITest
+                   |> Array.filter(fun (t) -> t.App.TargetPlatform = platform)
 
-        MSBuild null "Clean" [ ("Configuration", buildConfiguration.Configuration); ("Platform", buildConfiguration.Platform) ] [ solutionFile ] |> ignore
-        MSBuild null "Build" [ ("Configuration", buildConfiguration.Configuration); ("Platform", buildConfiguration.Platform) ] [ solutionFile ] |> ignore
+    if Array.isEmpty uiTests then trace ("No apps are configured to be UI tested for the platform " + platform.ToString()) 
 
-        buildTargetFile
-        |> runTest testResultTargetFile
-        |> ignore
-
+    for uiTest in uiTests do
+        buildApp uiTest.App 
+        runUnitTest uiTest.UnitTest
 
 let package (platform:TargetPlatform) =
     let packages = configuration.Package
@@ -129,6 +137,7 @@ type DefaultTargetImplementations() =
         member this.build platform = build platform
         member this.package platform = package platform
         member this.runUnitTests() = runUnitTests()
+        member this.runUITests platform = runUITests platform
     
     end
 

@@ -48,8 +48,9 @@ module ContinuousDeliveryMobile
     type ITargetImplementations =
         interface
             abstract member build: TargetPlatform -> unit
-            abstract member package: TargetPlatform -> unit
             abstract member runUnitTests: unit -> unit
+            abstract member runUITests: TargetPlatform -> unit
+            abstract member package: TargetPlatform -> unit
         end
 
     type IConfiguration =
