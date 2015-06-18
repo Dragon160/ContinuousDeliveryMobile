@@ -11,9 +11,9 @@ module Configuration
             let solution = System.IO.Path.Combine("GroceryShopper", "GroceryShopper.sln")
             let project path = System.IO.Path.Combine("GroceryShopper", path, path + ".csproj")
             
-            let androidApp config = App(Android, Solution solution, project "GroceryShopper.Forms.Droid", BuildConfiguration(config, "Any CPU"))
+            let androidApp config = App(Android, solution, project "GroceryShopper.Forms.Droid", BuildConfiguration(config, "Any CPU"))
 
-            let iOSApp config = App(IOS, Solution solution, project "GroceryShopper.Forms.iOS", BuildConfiguration(config, "iPhoneSimulator")) // use iPhone for release
+            let iOSApp config = App(IOS, solution, project "GroceryShopper.Forms.iOS", BuildConfiguration(config, "iPhoneSimulator")) // use iPhone for release
 
             let unitTests = UnitTest("Grocery.UnitTests.csproj", BuildConfiguration("Test", "Any CPU"), "Grocery.UnitTests.dll", "testresults.xml") // dll name kann evtl aus Projektdatei gelesen werden
 

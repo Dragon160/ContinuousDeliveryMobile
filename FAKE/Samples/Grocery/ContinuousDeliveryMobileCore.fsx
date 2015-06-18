@@ -19,24 +19,20 @@ let technicalConfiguration =
     (Configuration.Configuration() :> ITechnicalConfiguration)
 
 let buildApp (app:App) =
-    let projectOrSolution = match app.BuildObject with
-                                | Project value -> value
-                                | Solution value -> value
-        
-    trace ("building " + projectOrSolution + " in " + app.BuildConfiguration.Configuration)
+    trace ("building " + app.SolutionFile + " in " + app.BuildConfiguration.Configuration)
         
     if app.TargetPlatform = IOS
     then 
         XamarinHelper.iOSBuild(fun defaults ->
             {defaults with
-                ProjectPath = projectOrSolution
+                ProjectPath = app.SolutionFile
                 Configuration = app.BuildConfiguration.Configuration + "|" + app.BuildConfiguration.Platform
                 Target = "Build"
                 MDToolPath = defaults.MDToolPath
             })
     elif app.TargetPlatform = Android
     then
-        MSBuild null "Rebuild" [ ("Configuration", app.BuildConfiguration.Configuration); ("Platform", app.BuildConfiguration.Platform) ] [ projectOrSolution ] |> ignore                    
+        MSBuild null "Rebuild" [ ("Configuration", app.BuildConfiguration.Configuration); ("Platform", app.BuildConfiguration.Platform) ] [ app.SolutionFile ] |> ignore                    
         let outputPath = System.IO.Path.Combine((new System.IO.FileInfo(app.ProjectFile)).Directory.FullName , "bin" , app.BuildConfiguration.Configuration)  
         XamarinHelper.AndroidPackage (fun defaults ->
                 {defaults with

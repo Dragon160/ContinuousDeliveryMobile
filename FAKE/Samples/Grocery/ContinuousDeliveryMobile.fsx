@@ -13,11 +13,6 @@ module ContinuousDeliveryMobile
     type BuildPlatform =
         | Windows
         | OSX
-
-        // TODO: REMOVE
-    type BuildObject = 
-        | Solution of SolutionFile
-        | Project of ProjectFile
         
     type BuildConfiguration(configuration:string, platform:string)=
         member this.Configuration = configuration  
@@ -25,9 +20,9 @@ module ContinuousDeliveryMobile
 
     type TargetFile = string
     
-    type App(targetPlatform : TargetPlatform, buildObject : BuildObject, projectFile : ProjectFile, buildConfiguration : BuildConfiguration) = 
+    type App(targetPlatform : TargetPlatform, solutionFile : SolutionFile, projectFile : ProjectFile, buildConfiguration : BuildConfiguration) = 
         member this.TargetPlatform = targetPlatform  
-        member this.BuildObject = buildObject
+        member this.SolutionFile = solutionFile
         member this.ProjectFile = projectFile
         member this.BuildConfiguration = buildConfiguration
 
