@@ -1,6 +1,6 @@
 module ContinuousDeliveryMobileUtils
 
-    #r @"FAKE.3.5.4/tools/FakeLib.dll"
+    #r @"FAKE.3.35.2/tools/FakeLib.dll"
 
     #load "ContinuousDeliveryMobile.fsx"
 

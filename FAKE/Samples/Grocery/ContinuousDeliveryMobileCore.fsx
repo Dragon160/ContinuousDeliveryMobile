@@ -1,6 +1,6 @@
 module ContinuousDeliveryMobileCore
 
-#r @"FAKE.3.5.4/tools/FakeLib.dll"
+#r @"FAKE.3.35.2/tools/FakeLib.dll"
 
 #load "ContinuousDeliveryMobile.fsx"
 #load "ContinuousDeliveryMobileUtils.fsx"
@@ -108,6 +108,9 @@ let package (platform:TargetPlatform) =
 
             let move (file:FileInfo) =
                 let target = new FileInfo (Path.Combine(Path.GetDirectoryName(package.TargetFile), file.Name))
+                if File.Exists(target.FullName)
+                then File.Delete(target.FullName)
+
                 System.IO.File.Move(file.FullName, target.FullName)
                 target
 
